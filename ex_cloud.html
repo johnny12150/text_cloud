@@ -1,0 +1,212 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    <title>ex_文字雲</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/css/dataTables.bootstrap.css">
+
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/js/dataTables.bootstrap.min.js"></script>
+    <script src="js/jquery.awesomeCloud-0.2.js"></script>
+
+    <style>
+        .container {
+            text-align: center;
+        }
+
+        #cloudArea {
+            border: 3px solid black;
+            border-color: black;
+            height: 300px;
+            width: 400px;
+            margin: 0 auto;
+        }
+
+        #draw_btn {
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>文字雲</h1>
+    <div id="cloudArea"></div>
+    <button id="draw_btn" class="btn btn-primary">畫圖</button>
+</div>
+
+
+<script>
+
+    $('#draw_btn').click(function () {
+        draw_dashboard_cloud();
+    })
+
+    function draw_dashboard_cloud() {
+        url = "http://social.innobic.yzu.edu.tw/voicefinance/ying_PK_cloud_test.php";
+        // poststr = "stdt=" + stday + "&eddt=" + edday + "&keyword=" + encodeURIComponent(keywr.split(' ')[1]);
+        poststr = "stdt=2017-10-25&eddt=2018-01-21&keyword=%E9%B4%BB%E6%B5%B7&lower=1&maxq=150&orderby=frequency&sz=300&when=1&kd1=1&kd2=1&kd3=1&kd4=1&kd5=1&kd6=1&slop=50&Stock=0&Chinatimes_ctee=1&Apple_News=1&Chinatimes_News=1&Businessweekly=1&CommonWealth=1&wealth=1&=1&mobileStock=0";
+        $('#cloudArea').html("Loading...");
+        fake_ajax();
+        // $.ajax(
+        //     {
+        //         type: "POST",
+        //         url: url,
+        //         data: poststr,
+        //         cache: false,
+        //         success: function (message) {
+        //             var newCloud = message;
+        //             console.log(newCloud);
+        //             // 先清除 loading 畫面
+        //             $('#cloudArea').html('');
+        //
+        //             // 將文字雲詞頻內容放入欄位，但預設隱藏，之後會由 draw_cloud() 來繪製成圖
+        //             $.each(newCloud.cloud_data, function(k,v){
+        //                 $('#cloudArea').append('<span data-weight="'+ v.weight +'">'+ v.data +'</span>');
+        //             });
+        //
+        //             draw_cloud();
+        //         }
+        //     });
+    }
+
+    // end of 文字雲
+
+    function fake_ajax() {
+        var newCloud = [{"word": "\u53f0\u7a4d\u96fb", "widget": 220}, {
+            "word": "\u5927\u7acb\u5149",
+            "widget": 161
+        }, {"word": "\u53f0\u80a1", "widget": 120}, {"word": "\u5916\u8cc7", "widget": 115}, {
+            "word": "\u6295\u8cc7",
+            "widget": 104
+        }, {"word": "\u54e1\u5de5", "widget": 73}, {"word": "\u53f0\u7063", "widget": 71}, {
+            "word": "\u860b\u679c",
+            "widget": 69
+        }, {"word": "\u5e02\u5834", "widget": 68}, {
+            "word": "\u80a1\u50f9",
+            "widget": 66
+        }, {"word": "\u6b0a\u503c\u80a1", "widget": 61}, {
+            "word": "\u8868\u73fe",
+            "widget": 60
+        }, {"word": "\u570b\u6cf0\u91d1", "widget": 59}, {
+            "word": "\u71df\u6536",
+            "widget": 55
+        }, {"word": "\u806f\u767c\u79d1", "widget": 54}, {
+            "word": "\u5ee3\u9054",
+            "widget": 53
+        }, {"word": "\u5bcc\u90a6\u91d1", "widget": 53}, {
+            "word": "\u6307\u6578",
+            "widget": 52
+        }, {"word": "\u80a1\u738b", "widget": 51}, {"word": "\u4eca\u5e74", "widget": 50}, {
+            "word": "\u80a1\u7968",
+            "widget": 48
+        }, {"word": "\u8868\u793a", "widget": 48}, {"word": "\u4f01\u696d", "widget": 47}, {
+            "word": "\u590f\u666e",
+            "widget": 47
+        }, {"word": "\u7406\u8ca1", "widget": 44}, {"word": "\u7f8e\u570b", "widget": 42}, {
+            "word": "\u516c\u53f8",
+            "widget": 42
+        }, {"word": "\u6301\u7e8c", "widget": 40}, {"word": "\u5206\u7d05", "widget": 38}, {
+            "word": "\u7fa4\u5275",
+            "widget": 37
+        }, {"word": "\u8463\u4e8b\u9577", "widget": 36}, {
+            "word": "\u5357\u4e9e\u79d1",
+            "widget": 36
+        }, {"word": "\u90ed\u53f0\u9298", "widget": 36}, {
+            "word": "\u5831\u5c0e",
+            "widget": 36
+        }, {"word": "\u4eca\u65e5", "widget": 35}, {"word": "\u96c6\u5718", "widget": 34}, {
+            "word": "\u53cb\u9054",
+            "widget": 33
+        }, {"word": "\u4e2d\u4fe1\u91d1", "widget": 33}, {
+            "word": "\u96fb\u5b50\u80a1",
+            "widget": 33
+        }, {"word": "11\u6708", "widget": 33}, {"word": "\u53bb\u5e74", "widget": 32}, {
+            "word": "\u76ee\u524d",
+            "widget": 32
+        }, {"word": "\u65e5\u6708\u5149", "widget": 32}, {
+            "word": "\u53f0\u5851",
+            "widget": 32
+        }, {"word": "\u53f0\u9054\u96fb", "widget": 31}, {
+            "word": "\u65b9\u9762",
+            "widget": 30
+        }, {"word": "\u65d7\u4e0b", "widget": 29}, {"word": "\u96fb\u5b50", "widget": 29}, {
+            "word": "\u4ec1\u5bf6",
+            "widget": 29
+        }, {"word": "\u5de5\u696d", "widget": 29}, {"word": "\u5f71\u97ff", "widget": 29}, {
+            "word": "\u806f\u96fb",
+            "widget": 29
+        }, {"word": "\u4e2d\u570b", "widget": 28}, {"word": "\u6307\u51fa", "widget": 28}, {
+            "word": "\u4e2d\u92fc",
+            "widget": 27
+        }, {"word": "\u73fe\u91d1", "widget": 27}, {"word": "\u672a\u4f86", "widget": 27}, {
+            "word": "\u4e9e\u6ce5",
+            "widget": 27
+        }, {"word": "\u548c\u78a9", "widget": 26}, {
+            "word": "\u53d7\u60e0",
+            "widget": 25
+        }, {"word": "\u9060\u6771\u65b0", "widget": 25}, {"word": "12\u6708", "widget": 25}, {
+            "word": "\u65cf\u7fa4",
+            "widget": 24
+        }, {"word": "\u79d1\u6280", "widget": 23}, {
+            "word": "\u5146\u8c50\u91d1",
+            "widget": 23
+        }, {"word": "\u65b0\u805e", "widget": 23}, {
+            "word": "\u5bcc\u58eb\u5eb7",
+            "widget": 23
+        }, {"word": "\u5831\u544a", "widget": 23}, {"word": "\u6280\u8853", "widget": 22}, {
+            "word": "\u53f0\u6ce5",
+            "widget": 22
+        }, {"word": "\u7d71\u4e00", "widget": 22}, {"word": "\u6cd5\u4eba", "widget": 22}, {
+            "word": "\u90ed\u8463",
+            "widget": 21
+        }, {"word": "\u5357\u4e9e", "widget": 21}, {
+            "word": "\u4e2d\u83ef\u96fb",
+            "widget": 21
+        }, {"word": "\u767c\u653e", "widget": 21}, {"word": "\u660e\u5e74", "widget": 21}, {
+            "word": "\u91d1\u878d",
+            "widget": 21
+        }, {"word": "\u7def\u5275", "widget": 20}, {"word": "\u96c6\u4e2d\u4ea4\u6613", "widget": 20}];
+        // 先清除 loading 畫面
+        $('#cloudArea').html('');
+
+        // 將文字雲詞頻內容放入欄位，但預設隱藏，之後會由 draw_cloud() 來繪製成圖
+        $.each(newCloud.cloud_data, function (k, v) {
+            $('#cloudArea').append('<span data-weight="' + v.weight + '">' + v.data + '</span>');
+        });
+
+        draw_cloud();
+    }
+
+    // 繪製 新文字雲
+    function draw_cloud() {
+        $("#cloudArea").awesomeCloud({
+            "size": {
+                "grid": 8,
+                "factor": 0,
+            },
+            "options": {
+                "color": "random-dark",
+                "rotationRatio": 0
+            },
+            "font": "'Times New Roman', Times, serif",
+            "shape": "circle"
+        });
+    }
+</script>
+</body>
+</html>

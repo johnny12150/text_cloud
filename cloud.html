@@ -1,0 +1,340 @@
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    <title>FinanceTest - 文字雲</title>
+
+    <!-- <link rel="stylesheet" href="css/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+
+    <!-- <link rel="stylesheet" href="css/dataTables.bootstrap.css"> -->
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/css/dataTables.bootstrap.css">
+
+    <!-- fixme: missing -->
+    <!-- <link rel="stylesheet" href="css/AdminLTE.min.css"> -->
+
+    <!-- <script src="js/jQuery-2.1.4.min.js"></script> -->
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"
+            integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <!-- <script src="js/bootstrap.min.js"></script> -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <!-- <script src="js/jquery.dataTables.min.js"></script> -->
+    <script src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <!-- <script src="js/dataTables.bootstrap.min.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.19/js/dataTables.bootstrap.min.js"></script>
+
+    <style>
+        #dashboard_cloud_list_btn {
+            display: inline-block;
+        }
+
+        #dashboard_cloud1 {
+            height: 300px;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+<div class="row">
+    <div class="col-md-12">
+        <div class="box box-success">
+            <div class="box-header with-border">
+                <i class="fa fa-cloud"></i>
+                <h3 class="box-title">文字雲</h3>
+                <div class="box-tools pull-right">
+                    <button class="btn btn-xs btn-success" id="dashboard_cloud_list_btn" data-toggle="modal"
+                            data-target="#myModal">編輯
+                    </button>
+                    <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                </div>
+            </div>
+            <div class="box-body">
+                <div id="dashboard_cloud1"></div>
+            </div><!-- /.box-body-->
+        </div><!-- /.box -->
+    </div>
+    <!--  ./col -->
+</div>
+<!-- ./row -->
+
+<!-- Modal Word List -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="z-index:100000">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">文字雲列表</h4>
+            </div>
+            <div class="modal-body">
+                <table id="example" class="display" cellspacing="0" width="100%">
+                    <thead>
+                    <tr>
+                        <button class="btn btn-primary btn-sm" id="keep-allword">全選保留</button>
+                        <button class="btn btn-primary btn-sm" id="cancel-allword">全選刪除</button>
+                    </tr>
+                    <tr>
+                        <th>選單</th>
+                        <th>關鍵字</th>
+                        <th>權重</th>
+                    </tr>
+                    </thead>
+                    <tbody id="dashboard_cloud_word_list">
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="update_dashboard_cloud()">
+                    Save changes
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+<script>
+
+    // Start : editable word cloud
+    var clouddata = '';
+
+    function draw_dashboard_cloud2() {
+        url = "http://social.innobic.yzu.edu.tw/voice/ying_corpus_sts_w_edit_test.php";
+        poststr = "stdt=2017-11-22&eddt=2018-01-21&keyword=%E9%B4%BB%E6%B5%B7&lower=1&maxq=80&orderby=frequency&sz=0&kd1=1&kd2=1&kd3=1&kd4=1&kd5=1&kd6=1&slop=50&Hate=1&Gossiping=1&Apple_News=1&ltn_news=1&Chinatimes_News=1&Chinatimes_Realtimes=1&mobileStock=1";
+        $('#dashboard_cloud1').html("Loading...");
+        fake_ajax();
+        // $.ajax(
+        // {
+        // 	type: "POST",
+        // 	url: url,
+        // 	data : poststr,
+        // 	cache: false,
+        // 	success: function(message){
+        // 		obj = JSON.parse(message);
+
+        // 		$("#wordcloud2").html("");
+        // 		var wordHTML = "";
+        // 		for (i = 0; i < obj.length; i++) {
+        // 		    DataTableAddRow('<input type="checkbox" class="wordlsit" data-weight="'+obj[i].widget+'" name="word" value="'+obj[i].word+' "checked>', obj[i].word, obj[i].widget);
+        // 			wordHTML += '<span data-weight="'+obj[i].widget+'">'+obj[i].word+'</span>';
+        // 		}
+
+        // 		outputHTML (wordHTML,'#dashboard_cloud1','wordcloud2');
+
+        // 	}
+        // });
+    }
+
+    function fake_ajax() {
+        obj = [{"word": "\u53f0\u7a4d\u96fb", "widget": 220}, {
+            "word": "\u5927\u7acb\u5149",
+            "widget": 161
+        }, {"word": "\u53f0\u80a1", "widget": 120}, {"word": "\u5916\u8cc7", "widget": 115}, {
+            "word": "\u6295\u8cc7",
+            "widget": 104
+        }, {"word": "\u54e1\u5de5", "widget": 73}, {"word": "\u53f0\u7063", "widget": 71}, {
+            "word": "\u860b\u679c",
+            "widget": 69
+        }, {"word": "\u5e02\u5834", "widget": 68}, {
+            "word": "\u80a1\u50f9",
+            "widget": 66
+        }, {"word": "\u6b0a\u503c\u80a1", "widget": 61}, {
+            "word": "\u8868\u73fe",
+            "widget": 60
+        }, {"word": "\u570b\u6cf0\u91d1", "widget": 59}, {
+            "word": "\u71df\u6536",
+            "widget": 55
+        }, {"word": "\u806f\u767c\u79d1", "widget": 54}, {
+            "word": "\u5ee3\u9054",
+            "widget": 53
+        }, {"word": "\u5bcc\u90a6\u91d1", "widget": 53}, {
+            "word": "\u6307\u6578",
+            "widget": 52
+        }, {"word": "\u80a1\u738b", "widget": 51}, {"word": "\u4eca\u5e74", "widget": 50}, {
+            "word": "\u80a1\u7968",
+            "widget": 48
+        }, {"word": "\u8868\u793a", "widget": 48}, {"word": "\u4f01\u696d", "widget": 47}, {
+            "word": "\u590f\u666e",
+            "widget": 47
+        }, {"word": "\u7406\u8ca1", "widget": 44}, {"word": "\u7f8e\u570b", "widget": 42}, {
+            "word": "\u516c\u53f8",
+            "widget": 42
+        }, {"word": "\u6301\u7e8c", "widget": 40}, {"word": "\u5206\u7d05", "widget": 38}, {
+            "word": "\u7fa4\u5275",
+            "widget": 37
+        }, {"word": "\u8463\u4e8b\u9577", "widget": 36}, {
+            "word": "\u5357\u4e9e\u79d1",
+            "widget": 36
+        }, {"word": "\u90ed\u53f0\u9298", "widget": 36}, {
+            "word": "\u5831\u5c0e",
+            "widget": 36
+        }, {"word": "\u4eca\u65e5", "widget": 35}, {"word": "\u96c6\u5718", "widget": 34}, {
+            "word": "\u53cb\u9054",
+            "widget": 33
+        }, {"word": "\u4e2d\u4fe1\u91d1", "widget": 33}, {
+            "word": "\u96fb\u5b50\u80a1",
+            "widget": 33
+        }, {"word": "11\u6708", "widget": 33}, {"word": "\u53bb\u5e74", "widget": 32}, {
+            "word": "\u76ee\u524d",
+            "widget": 32
+        }, {"word": "\u65e5\u6708\u5149", "widget": 32}, {
+            "word": "\u53f0\u5851",
+            "widget": 32
+        }, {"word": "\u53f0\u9054\u96fb", "widget": 31}, {
+            "word": "\u65b9\u9762",
+            "widget": 30
+        }, {"word": "\u65d7\u4e0b", "widget": 29}, {"word": "\u96fb\u5b50", "widget": 29}, {
+            "word": "\u4ec1\u5bf6",
+            "widget": 29
+        }, {"word": "\u5de5\u696d", "widget": 29}, {"word": "\u5f71\u97ff", "widget": 29}, {
+            "word": "\u806f\u96fb",
+            "widget": 29
+        }, {"word": "\u4e2d\u570b", "widget": 28}, {"word": "\u6307\u51fa", "widget": 28}, {
+            "word": "\u4e2d\u92fc",
+            "widget": 27
+        }, {"word": "\u73fe\u91d1", "widget": 27}, {"word": "\u672a\u4f86", "widget": 27}, {
+            "word": "\u4e9e\u6ce5",
+            "widget": 27
+        }, {"word": "\u548c\u78a9", "widget": 26}, {
+            "word": "\u53d7\u60e0",
+            "widget": 25
+        }, {"word": "\u9060\u6771\u65b0", "widget": 25}, {"word": "12\u6708", "widget": 25}, {
+            "word": "\u65cf\u7fa4",
+            "widget": 24
+        }, {"word": "\u79d1\u6280", "widget": 23}, {
+            "word": "\u5146\u8c50\u91d1",
+            "widget": 23
+        }, {"word": "\u65b0\u805e", "widget": 23}, {
+            "word": "\u5bcc\u58eb\u5eb7",
+            "widget": 23
+        }, {"word": "\u5831\u544a", "widget": 23}, {"word": "\u6280\u8853", "widget": 22}, {
+            "word": "\u53f0\u6ce5",
+            "widget": 22
+        }, {"word": "\u7d71\u4e00", "widget": 22}, {"word": "\u6cd5\u4eba", "widget": 22}, {
+            "word": "\u90ed\u8463",
+            "widget": 21
+        }, {"word": "\u5357\u4e9e", "widget": 21}, {
+            "word": "\u4e2d\u83ef\u96fb",
+            "widget": 21
+        }, {"word": "\u767c\u653e", "widget": 21}, {"word": "\u660e\u5e74", "widget": 21}, {
+            "word": "\u91d1\u878d",
+            "widget": 21
+        }, {"word": "\u7def\u5275", "widget": 20}, {"word": "\u96c6\u4e2d\u4ea4\u6613", "widget": 20}];
+
+        $("#wordcloud2").html("");
+        var wordHTML = "";
+        for (i = 0; i < obj.length; i++) {
+            DataTableAddRow('<input type="checkbox" class="wordlsit" data-weight="' + obj[i].widget + '" name="word" value="' + obj[i].word + ' "checked>', obj[i].word, obj[i].widget);
+            wordHTML += '<span data-weight="' + obj[i].widget + '">' + obj[i].word + '</span>';
+        }
+
+        outputHTML(wordHTML, '#dashboard_cloud1', 'wordcloud2');
+
+    }
+
+    function outputHTML(wordHTML, id, wordcloudID) {
+        var CloudStr = "";
+        CloudStr += "<script src=\"js\/jquery.awesomeCloud-0.2.js\"><\/script>";
+        // CloudStr += "<script src=\"https:\/\/raw.githubusercontent.com\/metaloha\/jQuery.awesomeCloud.plugin\/master\/jquery.awesomeCloud-0.2.min.js\"><\/script>";
+        CloudStr += "<style type=\"text\/css\">";
+        CloudStr += ".wordcloud {";
+        CloudStr += "border: 0px ;";
+        CloudStr += "height: 300px;";
+        CloudStr += "margin: 0.1in auto;";
+        CloudStr += "padding: 0;";
+        CloudStr += "page-break-after: always;";
+        CloudStr += "page-break-inside: avoid;";
+        CloudStr += "width: 100%;";
+        CloudStr += "}";
+        CloudStr += "<\/style>";
+        CloudStr += "<link href=\"http:\/\/www.jqueryscript.net\/css\/jquerysctipttop.css\" rel=\"stylesheet\" type=\"text\/css\">";
+        CloudStr += "<div id=\"" + wordcloudID + "\" class=\"wordcloud\">";
+        CloudStr += wordHTML;
+        CloudStr += "</div>";
+        CloudStr += "<script>				";
+        CloudStr += "				$(\"#" + wordcloudID + "\").awesomeCloud({";
+        CloudStr += "";
+        CloudStr += "						\"size\" : {";
+        CloudStr += "							\"grid\" : 8,";
+        CloudStr += "							";
+        CloudStr += "							\"factor\" :0,";
+        CloudStr += "						},";
+        CloudStr += "						\"options\" : {";
+        CloudStr += "							\"color\" : \"random-dark\",";
+        CloudStr += "							\"rotationRatio\" :0";
+        CloudStr += "						},";
+        CloudStr += "						\"font\" : \"'Times New Roman', Times, serif\",";
+        CloudStr += "						\"shape\" : \"circle\"";
+        CloudStr += "				});";
+        CloudStr += "<\/script> ";
+
+        $(id).html(CloudStr);
+    }
+
+    function update_dashboard_cloud() {
+        //get checked list form checkbox
+        var array = new Array();
+        $("input:checkbox[name=word]:checked").each(function () {
+            array.push([$(this).val(), $(this).attr("data-weight")]);
+        });
+        // recalculate weight
+        var Hscale = 1;
+        var Lscale = 2;
+        var stage;
+        var ptr;
+        if (array[0][1] < 220) {
+            Hscale = 220 / array[0][1];
+            Lscale = 20 / array[array.length - 1][1];
+            stage = (Hscale - Lscale) / (array.length);
+            ptr = Hscale;
+            //console.log('Hscale: ' + Hscale + ' Lscale: ' + Lscale + 'stage' + stage  );
+            for (i = 0; i < array.length; i++) {
+                array[i][1] = Math.round(array[i][1] * ptr);
+                ptr = ptr - stage;
+                //console.log(array[i][1]);
+            }
+        }
+
+        // End recalculate weight
+        wordHTML = "";
+        for (i = 0; i < array.length; i++) {
+            wordHTML += '<span data-weight="' + (array[i][1]) * (2) + '">' + array[i][0] + '</span>';
+        }
+        outputHTML(wordHTML, '#dashboard_cloud1', "wordcloud2");
+    }
+
+    // init data table
+    var t = $('#example').DataTable({
+        "paging": false,
+        "ordering": false,
+        "info": false
+    });
+
+    function DataTableAddRow(t1, t2, t3) {
+        t.row.add([
+            t1,
+            t2,
+            t3
+        ]).draw(false);
+    }
+
+    function ClearDataTable() {
+        t.clear();
+    }
+
+    // Larry End
+
+    $(document).ready(function () {
+        draw_dashboard_cloud2()
+    });
+</script>
+</html>
